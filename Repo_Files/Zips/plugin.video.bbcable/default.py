@@ -83,10 +83,16 @@ def livecategory(url):
 		name = base64.b64decode(name)
 		
 		url1  = tools.regex_from_to(a,'<playlist_url>','</playlist_url>').replace('<![CDATA[','').replace(']]>','')
-		
+	
+		check = control.setting('ADULT')
+
 		a = 'FRENCH', 'BALKANS', 'FILIPINO','HAITIAN','PORTUGUESE','ISRAEL','ITALIAN','AFGHAN/PERSIAN','ARABIC','GREEK','CHINESE','VIETNAMESE','HINDI','PUNJABI','URDU','SOUTH INDIAN','BANGLA','AFRICAN','POLISH','HATIAN'
 		if not any(s in name for s in a):
-			tools.addDir(name,url1,2,icon,fanart,'')
+			if check=='true':
+				tools.addDir(name,url1,2,icon,fanart,'')
+			else:
+				if not 'FOR ADULTS' in name:
+					tools.addDir(name,url1,2,icon,fanart,'')
 		
 def Livelist(url):
 	open = tools.OPEN_URL(url)
@@ -297,7 +303,12 @@ def search():
 
 	
 def settingsmenu():
+	check  = control.setting('ADULT')
+	if check == 'true':status = '[COLOR lime]SHOWING[/COLOR]'
+	else:status = '[COLOR red]Hidden[/COLOR]'
+	
 	tools.addDir('Edit Advanced Settings','ADS',10,icon,fanart,'')
+	tools.addDir('Adult Cateogry: %s'%status,'ADULT',10,icon,fanart,'')
 	tools.addDir('Log Out','LO',10,icon,fanart,'')
 	
 
@@ -369,6 +380,8 @@ def addonsettings(url,description):
 		else:
 			xbmcaddon.Addon().setSetting('update','true')
 			xbmc.executebuiltin('Container.Refresh')
+	elif url =='ADULT':
+		showhideadult()
 	
 		
 def advancedsettings(device):
@@ -526,6 +539,15 @@ def extras():
 	tools.addDir('Integrate With TV Guide','tv',10,icon,fanart,'')
 	tools.addDir('Run a Speed Test','ST',10,icon,fanart,'')
 	tools.addDir('Clear Cache','CC',10,icon,fanart,'')
+	
+	
+	
+def showhideadult():
+	check = control.setting('ADULT')
+	
+	if check == 'true':control.setSetting('ADULT','false')
+	else:control.setSetting('ADULT','true')
+	xbmc.executebuiltin('Container.Refresh')
 
 params=tools.get_params()
 url=None
