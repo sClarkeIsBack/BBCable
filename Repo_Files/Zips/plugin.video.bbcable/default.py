@@ -304,8 +304,8 @@ def search():
 	
 def settingsmenu():
 	check  = control.setting('ADULT')
-	if check == 'true':status = '[COLOR lime]SHOWING[/COLOR]'
-	else:status = '[COLOR red]Hidden[/COLOR]'
+	if check == 'true':status = '[COLOR lime]Enabled[/COLOR]'
+	else:status = '[COLOR red]Disabled[/COLOR]'
 	
 	tools.addDir('Edit Advanced Settings','ADS',10,icon,fanart,'')
 	tools.addDir('Adult Cateogry: %s'%status,'ADULT',10,icon,fanart,'')
